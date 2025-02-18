@@ -1,0 +1,11 @@
+package org.example.model.dto;
+
+import lombok.Data;
+//U glavnom projektu ovo nije DTO. Služi za slanje podataka između klijenta i servera prilikom rezervacije termina.
+
+@Data //Anotacija @Data dolazi iz Lombok biblioteke i služi da automatski generiše: Getter i Setter metode; toString() metoda; equals() i hashCode() metode; Konstruktor bez argumenata
+public class ReservationRequestDTO {
+    private String userEmail;
+    private int appointmentId;
+}
+
