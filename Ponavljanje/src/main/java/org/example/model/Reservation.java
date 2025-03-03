@@ -12,7 +12,6 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @RequiredArgsConstructor
-@NoArgsConstructor
 @javax.persistence.Entity
 public class Reservation extends Entity{
     @ManyToOne
