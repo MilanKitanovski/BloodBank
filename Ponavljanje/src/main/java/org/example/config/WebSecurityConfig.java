@@ -48,6 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests().antMatchers("/api/users/register").permitAll()
 
+                .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+
                 .anyRequest().authenticated().and()
 
                 .formLogin().loginPage("/login").permitAll().and()
@@ -68,5 +70,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(HttpMethod.POST, "/api/users/login", "/api/users/register");
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/api/centres/search/**");
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
+        web.ignoring().antMatchers(
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/swagger-resources/**",
+                "/configuration/ui",
+                "/configuration/security"
+        );
     }
 }
