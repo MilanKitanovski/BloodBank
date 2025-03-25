@@ -1,5 +1,6 @@
 package org.example.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.model.User;
@@ -21,7 +22,6 @@ public class UserDTO {
     private String profession;
     private Gender gender;
     private int centreId;
-    private UserType userType;
     private String information;
 
     public UserDTO(){
@@ -42,7 +42,6 @@ public class UserDTO {
         this.profession = profession;
         this.gender = gender;
         this.centreId = centreId;
-        this.userType = userType;
         this.information = information;
     }
 
@@ -61,7 +60,6 @@ public class UserDTO {
         userDto.setUniquePersonalId(user.getUniquePersonalId());
         userDto.setGender(user.getGender());
         userDto.setAddress(user.getAddress());
-        userDto.setUserType(user.getUserType());
 
         return userDto;
     }

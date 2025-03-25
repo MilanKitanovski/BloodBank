@@ -36,7 +36,7 @@ public class User extends Entity {
     private String mobile;
 
     @NotNull
-    private String uniquePersonalId;
+    private String uniquePersonalId; //jmbg
 
     @NotNull
     private String profession;

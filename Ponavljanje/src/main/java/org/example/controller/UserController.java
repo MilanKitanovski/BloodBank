@@ -1,9 +1,9 @@
 package org.example.controller;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.flogger.Flogger;
 import org.apache.coyote.Response;
 import org.example.model.User;
-import org.example.model.dto.LoginDTO;
-import org.example.model.dto.UserDTO;
+import org.example.model.dto.*;
 import org.example.security.TokenUtil;
 import org.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@SecurityRequirement(name = "BearerAuth") //za dodavanje dugmeta auth u swageru
 @Tag(name = "User Controller", description = "CRUD operacije za korisnike") //dodaje ime grupe i dodaje opis u swaggeru
 @RestController
 @RequestMapping("api/users")
@@ -36,12 +36,6 @@ public class UserController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<User> findById(@PathVariable int id){
         return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
-    }
-
-    @PutMapping(path = "/update-user/{id}")
-    @CrossOrigin(origins = "http://localhost:4200")
-    public ResponseEntity<User> update(@PathVariable int id, @RequestBody UserDTO userDTO) {
-        return new ResponseEntity<>(userService.update(userDTO), HttpStatus.OK);
     }
 
     @GetMapping(value = "/all")
@@ -66,10 +60,27 @@ public class UserController {
 
         String token = tokenUtil.generateToken(user.getEmail(), user.getUserType().toString());
 
-        LoginDTO responseDTO = new LoginDTO();
-        responseDTO.setToken(token);
+        return ResponseEntity.ok(new AuthResponseDTO(token));
+    }
 
-        return ResponseEntity.ok(responseDTO);
+    @PostMapping(value = "/register")
+    public ResponseEntity<RegisterDTO> register(@RequestBody RegisterDTO registerDTO) {
+        User user = userService.register(registerDTO);
+
+        return ResponseEntity.ok(registerDTO);
+    }
+
+    @PatchMapping(path = "/update-user")
+    @CrossOrigin(origins = "http://localhost:4200")
+    public ResponseEntity<User> update(@RequestBody UserDTO userDTO) {
+        return new ResponseEntity<>(userService.update(userDTO), HttpStatus.OK);
+    }
+    @PutMapping(path = "/change-password", consumes = "application/json")
+    public ResponseEntity<ChangePasswordDTO> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO){
+        if(!userService.updatesUerPassword(changePasswordDTO))
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(new ChangePasswordDTO(changePasswordDTO.getOldPassword(), changePasswordDTO.getNewPassword()), HttpStatus.OK);
     }
 
 }
