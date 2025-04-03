@@ -27,13 +27,20 @@ public class AppointmentService {
     private boolean isExist(Appointment appointment) {
         List<Appointment> allAppointments = appointmentRepository.findAll();
 
-        boolean isExist = false;
 
         for (Appointment a : allAppointments) {
-            Date appointmentEnd = new Date(a.getDateAndTime().getTime() + ((long) a.getDuration() * 60 * 1000));
-            isExist = a.getDateAndTime().after(appointment.getDateAndTime()) && appointmentEnd.before(appointment.getDateAndTime());
+            Date existingStart = a.getDateAndTime();
+            Date existingEnd = new Date(a.getDateAndTime().getTime() + ((long) a.getDuration() * 60 * 1000));
+
+            Date newStart = appointment.getDateAndTime();
+            Date newEnd = new Date(appointment.getDateAndTime().getTime() + ((long) appointment.getDuration() * 60 * 1000));
+
+            // Provera da li postoji preklapanje
+            if(!(newEnd.before(existingStart) || newStart.after(existingEnd))){
+                return true; // Preklapanje postoji
+            }
         }
-        return isExist;
+        return false; // Nema preklapanja
     }
 
     public List<Appointment> findAll(){ return appointmentRepository.findAll();}
