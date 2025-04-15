@@ -15,9 +15,9 @@ import java.util.Date;
 import java.util.List;
 
 @SecurityRequirement(name = "BearerAuth") //za dodavanje dugmeta auth u swageru
-@Tag(name = "Centre Controller") //dodaje ime grupe i dodaje opis u swaggeru
+@Tag(name = "Appointment Controller") //dodaje ime grupe i dodaje opis u swaggeru
 @RestController
-@RequestMapping("api/centres")
+@RequestMapping("api/appointments")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AppointmentController {
     private final AppointmentService appointmentService;

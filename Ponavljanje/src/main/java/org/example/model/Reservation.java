@@ -2,7 +2,7 @@ package org.example.model;
 
 import lombok.*;
 import org.hibernate.Hibernate;
-
+import com.sun.istack.NotNull;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import java.util.Objects;
@@ -11,11 +11,15 @@ import java.util.Objects;
 @Setter
 @ToString
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
+
 @javax.persistence.Entity
 public class Reservation extends Entity{
+    @NotNull
     @ManyToOne
     private User user;
+
+    @NotNull
     @OneToOne
     private Appointment appointment;
 
